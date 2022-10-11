@@ -52,12 +52,11 @@ export const Navigation = () => {
                                     text={formatAddress(account)}
                                 >
                                     <CopyToClipboard text={account}>
-                                        <button>
-                                            <img
-                                                src={copyIcon}
-                                                alt="copy"
-                                            ></img>
-                                        </button>
+                                        <img
+                                            className="cursor-pointer"
+                                            src={copyIcon}
+                                            alt="copy"
+                                        ></img>
                                     </CopyToClipboard>
                                 </ButtonWithIcon>
                             </div>
