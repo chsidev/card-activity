@@ -126,9 +126,9 @@ export const Withdraw = ({ data, isLoading, refresh }: Props) => {
                                 <>
                                     {totalUnlocked - totalWithdrawn === 0 ? (
                                         <Button
+                                            size="small"
                                             disabled={true}
                                             text="NOTHING TO WITHDRAW"
-                                            size="small"
                                         />
                                     ) : (
                                         <GradientButton

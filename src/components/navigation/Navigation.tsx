@@ -1,15 +1,16 @@
-import { useContext, useEffect } from 'react';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { ASSET_ETH, ASSET_LAKE } from '../../constants/assets';
+
 import { Button } from '../button/Button';
 import { ButtonWithIcon } from '../button/ButtonWithIcon';
-import copyIcon from './../../assets/icons/copy-icon.svg';
-import keyIcon from './../../assets/icons/key-icon.svg';
-import horizontalLogo from './../../assets/icons/horizontal-logo.png';
-import { formatAddress } from '../../utils/formatAddress';
-import { WalletConnectContext } from '../../context';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { GradientButtonWithIcon } from '../button/gradient/GradientButtonWithIcon';
-import { ASSET_ETH, ASSET_LAKE } from '../../constants/assets';
+import { WalletConnectContext } from '../../context';
+import copyIcon from './../../assets/icons/copy-icon.svg';
+import { formatAddress } from '../../utils/formatAddress';
 import { formatValue } from '../../utils/formatValue';
+import horizontalLogo from './../../assets/icons/horizontal-logo.png';
+import keyIcon from './../../assets/icons/key-icon.svg';
+import { useContext } from 'react';
 
 export const Navigation = () => {
     const { account, ethBalance, tokenBalance, activateProvider } =
@@ -34,6 +35,7 @@ export const Navigation = () => {
                     {account ? (
                         <>
                             <Button
+                                size="big"
                                 disabled={true}
                                 text={`${formatValue(
                                     tokenBalance,
@@ -48,6 +50,7 @@ export const Navigation = () => {
 
                             <div className="ml-6">
                                 <ButtonWithIcon
+                                    size="big"
                                     disabled={true}
                                     text={formatAddress(account)}
                                 >
