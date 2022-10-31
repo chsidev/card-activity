@@ -49,7 +49,7 @@ const columns = [
             <>
                 <span className="text-center mb-2 text-sm">
                     {formatValue(info.getValue(), '', 0)} /{' '}
-                    {formatValue(info.row.getValue('allocatedAmount'), '', 0)}
+                    {formatValue(info.row.original.allocatedAmount, '', 0)}
                 </span>
                 <TabProgressBar
                     completed={
@@ -66,7 +66,7 @@ const columns = [
             <>
                 <span className="text-center mb-2 text-sm">
                     {formatValue(info.getValue(), '', 0)} /{' '}
-                    {formatValue(info.row.getValue('allocatedAmount'), '', 0)}
+                    {formatValue(info.row.original.allocatedAmount, '', 0)}
                 </span>
                 <TabProgressBar
                     completed={
@@ -83,7 +83,7 @@ const columns = [
             <span className="text-center text-sm">{info.getValue()}</span>
         ),
     }),
-    columnHelper.accessor('allocatedAmount', {
+    columnHelper.accessor('availableAmount', {
         header: 'AMOUNT AVAILABLE',
         cell: (info) => (
             <span className="text-center text-sm text-gray-300">

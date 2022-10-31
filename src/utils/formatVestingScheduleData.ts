@@ -31,6 +31,15 @@ export const formatVestingScheduleData = (
         terms,
         tgeTimestamp,
     );
+    const unlockedAmount = isUnlocked
+        ? allocatedAmount
+        : getUnlockedAmount(cliff, terms, vestingRate, tgeTimestamp);
+
+    const withdrawnAmount = parseBigNumber(
+        beneficiaryOverview.withdrawnAmount,
+        ASSET_LAKE.decimals,
+    );
+
     return {
         name,
         terms,
@@ -46,14 +55,10 @@ export const formatVestingScheduleData = (
         vestingRateAsString: isUnlocked
             ? 'FULLY VESTED'
             : `${formatValue(vestingRate)} $LAKE / ${getTermsAsString(terms)}`,
-        unlockedAmount: isUnlocked
-            ? allocatedAmount
-            : getUnlockedAmount(cliff, terms, vestingRate, tgeTimestamp),
+        unlockedAmount,
         isUnlocked,
         allocatedAmount,
-        withdrawnAmount: parseBigNumber(
-            beneficiaryOverview.withdrawnAmount,
-            ASSET_LAKE.decimals,
-        ),
+        withdrawnAmount,
+        availableAmount: unlockedAmount - withdrawnAmount,
     };
 };

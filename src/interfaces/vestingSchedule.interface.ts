@@ -11,4 +11,5 @@ export interface IVestingSchedule {
     withdrawnAmount: number;
     unlockedAmount: number;
     isUnlocked: boolean;
+    availableAmount: number;
 }
