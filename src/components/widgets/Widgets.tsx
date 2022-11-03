@@ -3,6 +3,7 @@ import { ReactNode, useContext, useState } from 'react';
 import { Button } from '../button/Button';
 import { GradientButton } from '../button/gradient/GradientButton';
 import { GradientButtonWithIcon } from '../button/gradient/GradientButtonWithIcon';
+import { ProvideLiquidityWidget } from './provideLiquidity/ProvideLiquidityWidget';
 import { SwapCustomWidget } from './swap/SwapCustomWidget';
 import { WalletConnectContext } from '../../context';
 import { WidgetBody } from './WidgetBody';
@@ -17,12 +18,12 @@ interface Widget {
 const defaultWidgetsState = [
     {
         name: 'PROVIDE LIQUIDITY',
-        isOpen: false,
-        component: <div className="w-full flex justify-center my-20">TBD</div>,
+        isOpen: true,
+        component: <ProvideLiquidityWidget />,
     },
     {
         name: 'SWAP $LAKE',
-        isOpen: true,
+        isOpen: false,
         component: <SwapCustomWidget />,
     },
     {
