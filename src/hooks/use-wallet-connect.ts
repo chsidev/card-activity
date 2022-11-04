@@ -1,11 +1,8 @@
-import { useEtherBalance, useEthers, useTokenBalance } from '@usedapp/core';
-
-import { ASSET_LAKE } from '../constants/assets';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import Web3Modal from 'web3modal';
-import { parseBigNumber } from '../utils/parseBigNumber';
 import { useConfig } from './use-config';
+import { useEthers } from '@usedapp/core';
 import { useState } from 'react';
 
 type InternalState = {
@@ -23,8 +20,6 @@ export type WalletConnectState = {
     active: boolean;
     account: string | undefined;
     provider: any;
-    ethBalance: number;
-    tokenBalance: number;
     library: JsonRpcProvider | undefined;
     error: string | null;
     activateProvider: () => void;
@@ -51,10 +46,7 @@ export const useWalletConnect = () => {
         switchNetwork,
     } = useEthers();
 
-    const { chainIdAsHex, lakeAddress } = useConfig();
-
-    const ethBalanceAsBigNumber = useEtherBalance(account);
-    const tokenBalanceAsBigNumber = useTokenBalance(lakeAddress, account);
+    const { chainIdAsHex } = useConfig();
 
     const getWeb3Modal = () => {
         const providerOptions = {
@@ -126,12 +118,6 @@ export const useWalletConnect = () => {
         active,
         account,
         provider,
-        ethBalance: ethBalanceAsBigNumber
-            ? parseBigNumber(ethBalanceAsBigNumber)
-            : 0,
-        tokenBalance: tokenBalanceAsBigNumber
-            ? parseBigNumber(tokenBalanceAsBigNumber, ASSET_LAKE.decimals)
-            : 0,
         library: library as JsonRpcProvider,
         error: internalState.error || error?.toString() || null,
         activateProvider,

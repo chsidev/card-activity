@@ -1,8 +1,15 @@
+import { ASSET_LAKE, ASSET_USDT } from '../../../constants/assets';
+import { useContext, useEffect, useState } from 'react';
+
 import { Button } from '../../button/Button';
 import { GradientButton } from '../../button/gradient/GradientButton';
 import ReactModal from 'react-modal';
 import { TokenInput } from './TokenInput';
+import { WalletConnectContext } from '../../../context';
 import cancelIcon from './../../../assets/icons/cancel-icon.svg';
+import { parseBigNumber } from '../../../utils/parseBigNumber';
+import { useConfig } from '../../../hooks/use-config';
+import { useTokenBalance } from '@usedapp/core';
 
 type Props = {
     isOpen: boolean;
@@ -28,6 +35,29 @@ const customStyles = {
 ReactModal.setAppElement('#root');
 
 export const ProvideLiquidityModal = ({ isOpen, closeModal }: Props) => {
+    const { account } = useContext(WalletConnectContext);
+    const { usdtAddress, lakeAddress } = useConfig();
+    const [usdtBalance, setUsdtBalance] = useState(0);
+    const [lakeBalance, setLakeBalance] = useState(0);
+    const usdtBalanceAsBigNumber = useTokenBalance(usdtAddress, account);
+    const lakeBalanceAsBigNumber = useTokenBalance(lakeAddress, account);
+
+    useEffect(() => {
+        setBalances();
+    }, [usdtBalanceAsBigNumber, lakeBalanceAsBigNumber]);
+
+    const setBalances = () => {
+        setUsdtBalance(
+            usdtBalanceAsBigNumber
+                ? parseBigNumber(usdtBalanceAsBigNumber, ASSET_USDT.decimals)
+                : 0,
+        );
+        setLakeBalance(
+            lakeBalanceAsBigNumber
+                ? parseBigNumber(lakeBalanceAsBigNumber, ASSET_LAKE.decimals)
+                : 0,
+        );
+    };
     const onApproveClick = () => {
         console.log('approve');
     };
@@ -58,15 +88,15 @@ export const ProvideLiquidityModal = ({ isOpen, closeModal }: Props) => {
                     <div className="font-kanit-medium color-gray-gradient text-shadow text-xl tracking-[.12em] text-center mb-4">
                         PROVIDE LIQUIDITY
                     </div>
-                    <div className="flex flex-col w-[20vw]">
+                    <div className="flex flex-col min-w-[20vw]">
                         <TokenInput
                             tokenSymbol="USDT"
-                            tokenAmount={1260}
+                            tokenAmount={usdtBalance}
                             tokenPrice={1}
                         />
                         <TokenInput
                             tokenSymbol="LAKE"
-                            tokenAmount={2700}
+                            tokenAmount={lakeBalance}
                             tokenPrice={0.47}
                         />
                     </div>

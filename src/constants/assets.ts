@@ -1,4 +1,3 @@
-// Should be replaced with Lake Token data (wETH data as example)
 export const ASSET_LAKE = {
     name: 'Data Lake Token',
     symbol: 'LAKE',
@@ -11,8 +10,14 @@ export const ASSET_ETH = {
     symbol: 'ETH',
 };
 
-export const ASSET_USDC = {
-    name: 'USD Coin',
-    symbol: 'USDC',
+export const ASSET_USDT = {
+    name: 'Tether USD',
+    symbol: 'USDT',
     decimals: 6,
+};
+
+export const ASSET_LP_TOKEN = {
+    name: 'LP TOKEN',
+    symbol: 'LP',
+    decimals: 18,
 };

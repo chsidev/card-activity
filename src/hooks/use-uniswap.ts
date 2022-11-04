@@ -1,4 +1,4 @@
-import { ASSET_LAKE, ASSET_USDC } from '../constants/assets';
+import { ASSET_LAKE, ASSET_USDT } from '../constants/assets';
 import { BigNumber, Contract } from 'ethers';
 
 import { JsonRpcProvider } from '@ethersproject/providers';
@@ -18,7 +18,7 @@ interface State {
 }
 
 export const useUniswap = () => {
-    const { chainId, lakeAddress, usdcAddress, usdcLakePoolAddress } =
+    const { chainId, lakeAddress, usdtAddress, usdtLakePoolAddress } =
         useConfig();
 
     const getLakePrice = async (provider: JsonRpcProvider): Promise<number> => {
@@ -33,12 +33,12 @@ export const useUniswap = () => {
             getPoolState(poolContract),
         ]);
 
-        const usdc = new Token(
+        const usdt = new Token(
             chainId,
-            usdcAddress,
-            ASSET_USDC.decimals,
-            ASSET_USDC.symbol,
-            ASSET_USDC.name,
+            usdtAddress,
+            ASSET_USDT.decimals,
+            ASSET_USDT.symbol,
+            ASSET_USDT.name,
         );
 
         const lake = new Token(
@@ -50,7 +50,7 @@ export const useUniswap = () => {
         );
 
         const pool = new Pool(
-            usdc,
+            usdt,
             lake,
             immutables.fee,
             state.sqrtPriceX96.toString(),

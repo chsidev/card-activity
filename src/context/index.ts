@@ -6,8 +6,6 @@ export const WalletConnectContext = createContext<WalletConnectState>({
     active: false,
     account: undefined,
     provider: undefined,
-    ethBalance: 0,
-    tokenBalance: 0,
     library: undefined,
     error: null,
     activateProvider: () => {},

@@ -1,5 +1,6 @@
 import { ASSET_ETH, ASSET_LAKE } from '../../constants/assets';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { useEtherBalance, useTokenBalance } from '@usedapp/core';
 
 import { Button } from '../button/Button';
 import { ButtonWithIcon } from '../button/ButtonWithIcon';
@@ -13,20 +14,18 @@ import { formatAddress } from '../../utils/formatAddress';
 import { formatValue } from '../../utils/formatValue';
 import horizontalLogo from './../../assets/icons/horizontal-logo.png';
 import keyIcon from './../../assets/icons/key-icon.svg';
+import { parseBigNumber } from '../../utils/parseBigNumber';
 import { useConfig } from '../../hooks/use-config';
 
 export const Navigation = () => {
-    const {
-        account,
-        provider,
-        ethBalance,
-        tokenBalance,
-        activateProvider,
-        deactivate,
-        switchNetwork,
-    } = useContext(WalletConnectContext);
+    const { account, provider, activateProvider, deactivate, switchNetwork } =
+        useContext(WalletConnectContext);
 
-    const { chainId, chainIdAsHex } = useConfig();
+    const { chainId, chainIdAsHex, lakeAddress } = useConfig();
+    const [ethBalance, setEthBalance] = useState(0);
+    const [lakeBalance, setLakeBalance] = useState(0);
+    const ethBalanceAsBigNumber = useEtherBalance(account);
+    const lakeBalanceAsBigNumber = useTokenBalance(lakeAddress, account);
 
     useEffect(() => {
         if (!account) {
@@ -39,6 +38,21 @@ export const Navigation = () => {
             switchNetwork(chainId);
         }
     }, [provider]);
+
+    useEffect(() => {
+        setBalances();
+    }, [ethBalanceAsBigNumber, lakeBalanceAsBigNumber]);
+
+    const setBalances = () => {
+        setEthBalance(
+            ethBalanceAsBigNumber ? parseBigNumber(ethBalanceAsBigNumber) : 0,
+        );
+        setLakeBalance(
+            lakeBalanceAsBigNumber
+                ? parseBigNumber(lakeBalanceAsBigNumber, ASSET_LAKE.decimals)
+                : 0,
+        );
+    };
 
     const activate = async () => {
         await activateProvider();
@@ -62,7 +76,7 @@ export const Navigation = () => {
                                 size="big"
                                 disabled={true}
                                 text={`${formatValue(
-                                    tokenBalance,
+                                    lakeBalance,
                                     ASSET_LAKE.symbol,
                                     2,
                                 )} | ${formatValue(

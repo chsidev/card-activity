@@ -34,7 +34,7 @@ export const TokenInput = ({ tokenSymbol, tokenAmount, tokenPrice }: Props) => {
                     <span>MAX</span>
                 </button>
                 <div className="flex flex-col items-center mt-2 mr-4">
-                    <span className="font-kanit-medium color-gradient text-2xl font-bold">
+                    <span className="font-kanit-medium color-gradient text-2xl font-bold whitespace-nowrap">
                         {formatValue(tokenAmount, tokenSymbol, 0)}
                     </span>
                     <span className="font-kanit-medium whitespace-nowrap text-xs tracking-[.12em]">
