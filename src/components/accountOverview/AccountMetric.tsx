@@ -5,6 +5,7 @@ interface Props {
     title: string;
     value: number;
     icon: ReactNode;
+    showDecimals: boolean;
     usdValue?: number;
     fontColor?: string;
 }
@@ -15,6 +16,7 @@ export const AccountMetric = ({
     icon,
     value,
     usdValue,
+    showDecimals,
 }: Props) => {
     return (
         <div className="w-full h-[6rem] flex justify-between pr-8 bg-black-700 rounded-[20px] inset-shadow">
@@ -35,15 +37,19 @@ export const AccountMetric = ({
                             >
                                 {formatValue(Math.trunc(value), '', 0)}
                             </span>
-                            <span
-                                className={`${
-                                    value >= 10 ** 6 ? 'text-xs' : 'text-base'
-                                } tracking-[.1em] color-gradient`}
-                            >
-                                {Math.abs(value - Math.trunc(value))
-                                    .toFixed(2)
-                                    .slice(1)}
-                            </span>
+                            {showDecimals && (
+                                <span
+                                    className={`${
+                                        value >= 10 ** 6
+                                            ? 'text-xs'
+                                            : 'text-base'
+                                    } tracking-[.1em] color-gradient`}
+                                >
+                                    {Math.abs(value - Math.trunc(value))
+                                        .toFixed(2)
+                                        .slice(1)}
+                                </span>
+                            )}
                         </div>
                         {!!usdValue && (
                             <span className="text-xs tracking-[.1em] text-gray-600 text-end">

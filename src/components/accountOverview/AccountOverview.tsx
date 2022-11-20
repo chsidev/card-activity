@@ -9,7 +9,6 @@ import { JsonRpcProvider } from '@ethersproject/providers';
 import { ProgressChart } from './progressChart/ProgressChart';
 import { REFRESH_LAKE_PRICE_INTERVAL } from '../../constants/commons';
 import { WalletConnectContext } from '../../context';
-import checkedIcon from '../../assets/icons/checked-icon.svg';
 import { colors } from '../../constants/colors';
 import dropIcon from '../../assets/icons/drop-icon.svg';
 import { formatVestingScheduleData } from '../../utils/formatVestingScheduleData';
@@ -18,7 +17,6 @@ import lockClosedIcon from '../../assets/icons/lock-closed-icon.svg';
 import lockOpenIcon from '../../assets/icons/lock-open-icon.svg';
 import { parseBigNumber } from '../../utils/parseBigNumber';
 import styled from 'styled-components';
-import uncheckedIcon from '../../assets/icons/unchecked-icon.svg';
 import { useBeneficiaryOverview } from '../../hooks/use-beneficiary-overview';
 import { useConfig } from '../../hooks/use-config';
 import { useLakePrice } from '../../hooks/use-lake-price';
@@ -30,7 +28,6 @@ export const AccountOverview = () => {
     const { account, library, activateProvider } =
         useContext(WalletConnectContext);
     const { lakeAddress } = useConfig();
-    const [isVerified, setIsVerified] = useState(false);
     const [lakeBalance, setLakeBalance] = useState(0);
     const [lakePrice, setLakePrice] = useState(0);
     const [totalLocked, setTotalLocked] = useState(0);
@@ -117,11 +114,11 @@ export const AccountOverview = () => {
     return (
         <div className="w-full h-full bg-black-800 rounded-[30px] inset-shadow relative">
             <div
-                className={`w-full h-full flex flex-col items-center px-16 ${
+                className={`w-full h-full flex flex-col items-center px-16 py-8 ${
                     account ? '' : 'blur-sm'
                 }`}
             >
-                <div className="w-full font-kanit-medium color-gray-gradient text-shadow text-3xl tracking-[.12em] my-8">
+                <div className="w-full font-kanit-medium color-gray-gradient text-shadow text-3xl tracking-[.12em] mb-8">
                     YOUR ACCOUNT
                 </div>
                 <StatContainer>
@@ -143,6 +140,7 @@ export const AccountOverview = () => {
                             }
                             value={totalLocked}
                             usdValue={totalLocked * lakePrice}
+                            showDecimals={true}
                         />
                         <AccountMetric
                             title={'UNLOCKED $LAKE'}
@@ -155,6 +153,7 @@ export const AccountOverview = () => {
                             }
                             value={totalUnlocked}
                             usdValue={totalUnlocked * lakePrice}
+                            showDecimals={true}
                         />
                         <AccountMetric
                             title={'TOTAL $LAKE'}
@@ -170,6 +169,7 @@ export const AccountOverview = () => {
                                 (totalLocked + totalUnlocked + lakeBalance) *
                                 lakePrice
                             }
+                            showDecimals={true}
                         />
                         <AccountMetric
                             title={'LP POSITIONS'}
@@ -181,31 +181,10 @@ export const AccountOverview = () => {
                                 ></img>
                             }
                             value={positionsCount}
+                            showDecimals={false}
                         />
                     </div>
                 </StatContainer>
-                <div className="w-full flex justify-end">
-                    <div className="flex items-center mr-8">
-                        <img
-                            className="w-[3rem] h-[3rem] mr-2"
-                            src={account ? checkedIcon : uncheckedIcon}
-                            alt="icon"
-                        ></img>
-                        <span className="color-gradient-light tracking-wider text-sm font-medium font-kanit-medium">
-                            WALLET {account ? 'CONNECTED' : 'DISCONNECTED'}
-                        </span>
-                    </div>
-                    <div className="flex items-center">
-                        <img
-                            className="w-[3rem] h-[3rem] mr-2"
-                            src={isVerified ? checkedIcon : uncheckedIcon}
-                            alt="icon"
-                        ></img>
-                        <span className="color-gradient-light tracking-wider text-sm font-medium font-kanit-medium">
-                            IDENTITY {isVerified ? 'VERIFIED' : 'UNVERIFIED'}
-                        </span>
-                    </div>
-                </div>
             </div>
             {!account && (
                 <div className="absolute top-[50%] left-[37%]">
