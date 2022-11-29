@@ -43,7 +43,6 @@ export const useConfig = () => {
             process.env.REACT_APP_SWAP_CONVENIENCE_FEE_RECIPIENT || '',
         nonfungiblePositionManagerAddress:
             process.env.REACT_APP_NONFUNGIBLE_POSITION_MANAGER_ADDRESSES || '',
-        stakingAddress: process.env.REACT_APP_STAKING_ADDRESS || '',
         getDappConfig,
     };
 };
