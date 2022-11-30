@@ -1,5 +1,4 @@
 import { ASSETS, ASSET_LAKE } from '../../../../../constants/assets';
-import { BigNumber, Contract } from 'ethers';
 import {
     DEFAULT_SLIPPAGE_TOLERANCE,
     DEFAULT_TRANSACTION_DEADLINE,
@@ -16,6 +15,7 @@ import { useTokenAllowance, useTokenBalance } from '@usedapp/core';
 
 import { Button } from '../../../../button/Button';
 import { ButtonWithSpinner } from '../../../../button/ButtonWithSpinner';
+import { Contract } from 'ethers';
 import { ERC20Abi } from '../../../../../abis/ERC20';
 import { GradientButton } from '../../../../button/gradient/GradientButton';
 import { GradientButtonWithSpinner } from '../../../../button/gradient/GradientButtonWithSpinner';
@@ -27,6 +27,7 @@ import { TokenInput } from '../../TokenInput';
 import { WalletConnectContext } from '../../../../../context';
 import { nearestUsableTick } from '@uniswap/v3-sdk';
 import { parseBigNumber } from '../../../../../utils/parseBigNumber';
+import { parseUnits } from 'ethers/lib/utils';
 import settingsIcon from './../../../../../assets/icons/settings-icon.svg';
 import { useConfig } from '../../../../../hooks/use-config';
 import { useLakeUsdtPrice } from '../../../../../hooks/use-lake-usdt-price';
@@ -236,7 +237,7 @@ export const SecondStep = ({
 
         const resp = tokenContract.approve(
             nonfungiblePositionManagerAddress,
-            BigNumber.from(amount),
+            parseUnits(amount.toString(), tokenDecimals),
         );
 
         await resp.wait();

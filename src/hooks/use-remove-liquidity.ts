@@ -40,7 +40,7 @@ export const useRemoveLiquidity = async (
         const { calldata, value } =
             NonfungiblePositionManager.removeCallParameters(position, {
                 tokenId: positionDetails.positionId,
-                liquidityPercentage: new Percent(percentage, 100),
+                liquidityPercentage: new Percent(percentage * 100, 10000),
                 slippageTolerance: new Percent(slippageTolerance * 100, 10000),
                 deadline,
                 collectOptions: {
