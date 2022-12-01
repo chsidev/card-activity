@@ -1,26 +1,33 @@
-import { useContext, useEffect, useState } from 'react';
-
 import { GradientButton } from '../../button/gradient/GradientButton';
-import { RampInstantSDK } from '@ramp-network/ramp-instant-sdk';
 import { WalletConnectContext } from '../../../context';
+// @ts-ignore
+import transakSDK from '@transak/transak-sdk';
+import { useConfig } from '../../../hooks/use-config';
+import { useContext } from 'react';
 
-const rampBasicConfig = {
-    hostAppName: 'Data Lake',
-    hostLogoUrl:
-        'https://data-lake.co/wp-content/uploads/2022/07/DL-Logo-Mark-Black.png',
-    fiatValue: '100',
-    fiatCurrency: 'USD',
+const transakBasicConfig = {
+    hostURL: window.location.origin,
+    widgetHeight: '550px',
+    widgetWidth: '450px',
+    defaultNetwork: 'ethereum',
+    network: 'ethereum',
+    defaultFiatAmount: 1000,
 };
 
 export const BuyWidget = () => {
     const { account } = useContext(WalletConnectContext);
+    const { transakApiKey, transakEnv } = useConfig();
 
-    const openRamp = (swapAsset: string) => {
-        new RampInstantSDK({
-            ...rampBasicConfig,
-            swapAsset,
-            userAddress: account,
-        }).show();
+    const openTransak = (swapAsset: string) => {
+        new transakSDK({
+            ...transakBasicConfig,
+            apiKey: transakApiKey,
+            environment: transakEnv,
+            walletAddress: account,
+            hostURL: window.location.origin,
+            defaultCryptoCurrency: swapAsset,
+            cryptoCurrencyList: [swapAsset],
+        }).init();
     };
 
     return (
@@ -30,7 +37,7 @@ export const BuyWidget = () => {
                     size="medium"
                     disabled={false}
                     text="BUY ETH"
-                    onClick={() => openRamp('ETH_ETH')}
+                    onClick={() => openTransak('ETH')}
                 />
             </div>
             <div className="mt-8">
@@ -38,7 +45,7 @@ export const BuyWidget = () => {
                     size="medium"
                     disabled={false}
                     text="BUY USDC"
-                    onClick={() => openRamp('ETH_USDC')}
+                    onClick={() => openTransak('USDC')}
                 />
             </div>
             <div className="mt-8">
@@ -46,7 +53,7 @@ export const BuyWidget = () => {
                     size="medium"
                     disabled={false}
                     text="BUY USDT"
-                    onClick={() => openRamp('ETH_USDT')}
+                    onClick={() => openTransak('USDT')}
                 />
             </div>
             <div className="mt-8">
@@ -54,7 +61,7 @@ export const BuyWidget = () => {
                     size="medium"
                     disabled={false}
                     text="BUY DAI"
-                    onClick={() => openRamp('ETH_DAI')}
+                    onClick={() => openTransak('DAI')}
                 />
             </div>
         </div>

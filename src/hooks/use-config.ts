@@ -58,16 +58,16 @@ export const useConfig = () => {
         ...networks[chain],
         lakeAddress: process.env.REACT_APP_LAKE_ADDRESS || '',
         ethAddress: process.env.REACT_APP_ETH_ADDRESS || '',
+        usdtAddress: process.env.REACT_APP_USDT_ADDRESS || '',
         vestingScheduleAddress:
             process.env.REACT_APP_VESTING_SCHEDULE_ADDRESS || '',
-        usdtLakePoolAddress: process.env.REACT_APP_USDT_LAKE_POOL_ADDRESS || '',
+        nonfungiblePositionManagerAddress:
+            process.env.REACT_APP_NONFUNGIBLE_POSITION_MANAGER_ADDRESSES || '',
         poolDeploymentBlockNumber: Number(
             process.env.REACT_APP_POOL_DEPLOYMENT_BLOCK_NUMBER,
         ),
-        usdtAddress: process.env.REACT_APP_USDT_ADDRESS || '',
-        etherscanBaseURL: `https://api${
-            chain === 'goerli' ? '-goerli' : ''
-        }.etherscan.io/api`,
+        transakApiKey: process.env.REACT_APP_TRANSAK_API_KEY || '',
+        transakEnv: process.env.REACT_APP_TRANSAK_ENV || 'PRODUCTION',
         swapConvenienceFee:
             100 *
             (Number(process.env.REACT_APP_SWAP_CONVENIENCE_FEE) > 1
@@ -75,8 +75,6 @@ export const useConfig = () => {
                 : Number(process.env.REACT_APP_SWAP_CONVENIENCE_FEE)),
         swapConvenienceFeeRecipient:
             process.env.REACT_APP_SWAP_CONVENIENCE_FEE_RECIPIENT || '',
-        nonfungiblePositionManagerAddress:
-            process.env.REACT_APP_NONFUNGIBLE_POSITION_MANAGER_ADDRESSES || '',
         pools,
         getPool,
         getDappConfig,
