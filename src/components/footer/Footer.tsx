@@ -1,5 +1,6 @@
 import { Button } from '../button/Button';
 import CopyToClipboard from 'react-copy-to-clipboard';
+import { Link } from 'react-router-dom';
 import { formatAddress } from '../../utils/formatAddress';
 import logo from '../../assets/icons/lake-logo.svg';
 import telegramIcon from '../../assets/icons/telegram-icon.svg';
