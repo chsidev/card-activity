@@ -51,11 +51,11 @@ export const SecondStep = ({
     const { account, library } = useContext(WalletConnectContext);
     const {
         lakeAddress,
-        ethAddress,
+        wethAddress,
         usdtAddress,
         nonfungiblePositionManagerAddress,
     } = useConfig();
-    const [tokenAddress, setTokenAddress] = useState<string>(ethAddress);
+    const [tokenAddress, setTokenAddress] = useState<string>(wethAddress);
     const [tokenDecimals, setTokenDecimals] = useState(0);
     const [tokenBalance, setTokenBalance] = useState(0);
     const [tokenPrice, setTokenPrice] = useState(0);
@@ -98,11 +98,11 @@ export const SecondStep = ({
         const fetchData = async (library: JsonRpcProvider) => {
             if (
                 !!selectedPosition &&
-                selectedPosition.tokenAddress !== usdtAddress
+                selectedPosition.tokenAddress === usdtAddress
             ) {
-                setTokenPrice(await useTokenUsdtPrice(library, tokenAddress));
-            } else {
                 setTokenPrice(1);
+            } else {
+                setTokenPrice(await useTokenUsdtPrice(library, tokenAddress));
             }
         };
         if (library) {
@@ -173,7 +173,7 @@ export const SecondStep = ({
 
     useEffect(() => {
         setTokenAddress(
-            !!selectedPosition ? selectedPosition.tokenAddress : ethAddress,
+            !!selectedPosition ? selectedPosition.tokenAddress : wethAddress,
         );
     }, [selectedPosition]);
 
@@ -235,7 +235,7 @@ export const SecondStep = ({
             library?.getSigner(account),
         );
 
-        const resp = tokenContract.approve(
+        const resp = await tokenContract.approve(
             nonfungiblePositionManagerAddress,
             parseUnits(amount.toString(), tokenDecimals),
         );
@@ -245,6 +245,10 @@ export const SecondStep = ({
         tokenAddress === lakeAddress
             ? setIsLakeApproving(false)
             : setIsTokenApproving(false);
+
+        tokenAddress === lakeAddress
+            ? setIsLakeApproved(true)
+            : setIsTokenApproved(true);
     };
 
     return (

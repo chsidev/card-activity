@@ -41,7 +41,7 @@ const getPools = (): IPool[] => {
             token1: {
                 address:
                     process.env[`REACT_APP_${token1Symbol}_ADDRESS`] ||
-                    (token1Symbol === 'ETH' ? WETH_ADDRESS : LAKE_ADDRESS),
+                    (token1Symbol === 'WETH' ? WETH_ADDRESS : LAKE_ADDRESS),
                 symbol: token1Symbol,
             },
         };
@@ -69,7 +69,7 @@ export const useConfig = () => {
     return {
         ...networks[chain],
         lakeAddress: process.env.REACT_APP_LAKE_ADDRESS || LAKE_ADDRESS,
-        ethAddress: process.env.REACT_APP_ETH_ADDRESS || WETH_ADDRESS,
+        wethAddress: process.env.REACT_APP_WETH_ADDRESS || WETH_ADDRESS,
         usdtAddress: process.env.REACT_APP_USDT_ADDRESS || USDT_ADDRESS,
         vestingScheduleAddress:
             process.env.REACT_APP_VESTING_ADDRESS || VESTING_ADDRESS,

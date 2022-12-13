@@ -30,9 +30,9 @@ export const ProvideLiquidityModal = ({
     refreshPositions,
     closeModal,
 }: Props) => {
-    const { lakeAddress, ethAddress, getPool } = useConfig();
+    const { lakeAddress, wethAddress, getPool } = useConfig();
     const [step, setStep] = useState(1);
-    const [pool, setPool] = useState<IPool>(getPool(ethAddress, lakeAddress)!);
+    const [pool, setPool] = useState<IPool>(getPool(wethAddress, lakeAddress)!);
     const [selectedPosition, setSelectedPosition] = useState<
         IPositionDetails | undefined
     >(undefined);
@@ -45,7 +45,7 @@ export const ProvideLiquidityModal = ({
     useEffect(() => {
         setStep(!!selectedPosition ? 2 : 1);
         const pool = getPool(
-            !!selectedPosition ? selectedPosition.tokenAddress : ethAddress,
+            !!selectedPosition ? selectedPosition.tokenAddress : wethAddress,
             lakeAddress,
         )!;
         setPool(pool);

@@ -6,10 +6,10 @@ export const useLakeEthPrice = async (
     provider: JsonRpcProvider,
     blockTag?: number,
 ): Promise<number> => {
-    const { lakeAddress, ethAddress } = useConfig();
+    const { lakeAddress, wethAddress } = useConfig();
     const pool = await useUniswapPool(
         provider,
-        ethAddress,
+        wethAddress,
         lakeAddress,
         blockTag,
     );

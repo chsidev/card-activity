@@ -14,7 +14,7 @@ type Props = {
 };
 
 export const Position = ({ position, disabled, onClick }: Props) => {
-    const { ethAddress } = useConfig();
+    const { wethAddress } = useConfig();
     return (
         <button
             className="hover:scale-105 cursor-pointer transition-transform duration-300"
@@ -29,7 +29,7 @@ export const Position = ({ position, disabled, onClick }: Props) => {
                                 <img
                                     className="w-[2rem] h-[3rem]"
                                     src={
-                                        position.tokenAddress === ethAddress
+                                        position.tokenAddress === wethAddress
                                             ? ethLogo
                                             : usdtLogo
                                     }

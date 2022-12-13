@@ -7,8 +7,12 @@ export const useLakeUsdtPrice = async (
     provider: JsonRpcProvider,
     blockTag?: number,
 ): Promise<number> => {
-    const { ethAddress } = useConfig();
+    const { wethAddress } = useConfig();
     const lakeEthPrice = await useLakeEthPrice(provider, blockTag);
-    const ethUsdPrice = await useTokenUsdtPrice(provider, ethAddress, blockTag);
+    const ethUsdPrice = await useTokenUsdtPrice(
+        provider,
+        wethAddress,
+        blockTag,
+    );
     return lakeEthPrice * ethUsdPrice;
 };

@@ -19,4 +19,10 @@ export const ASSET_USDT: IAsset = {
     decimals: 6,
 };
 
-export const ASSETS: IAsset[] = [ASSET_LAKE, ASSET_ETH, ASSET_USDT];
+export const ASSET_WETH: IAsset = {
+    name: 'Wrapped Ether',
+    symbol: 'WETH',
+    decimals: 18,
+};
+
+export const ASSETS: IAsset[] = [ASSET_LAKE, ASSET_ETH, ASSET_USDT, ASSET_WETH];

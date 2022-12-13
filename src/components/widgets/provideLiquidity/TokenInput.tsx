@@ -1,4 +1,4 @@
-import { ASSET_ETH, ASSET_USDT } from '../../../constants/assets';
+import { ASSET_USDT, ASSET_WETH } from '../../../constants/assets';
 
 import ReactTooltip from 'react-tooltip';
 import ethLogo from './../../../assets/icons/eth-logo.svg';
@@ -39,7 +39,7 @@ export const TokenInput = ({
                     src={
                         tokenSymbol === ASSET_USDT.symbol
                             ? usdtLogo
-                            : tokenSymbol === ASSET_ETH.symbol
+                            : tokenSymbol === ASSET_WETH.symbol
                             ? ethLogo
                             : lakeLogo
                     }

@@ -14,5 +14,7 @@ export const useTokenUsdtPrice = async (
         tokenAddress,
         blockTag,
     );
-    return Number(pool.token0Price.toSignificant());
+    return pool.token0.address.toLowerCase() === usdtAddress.toLocaleLowerCase()
+        ? Number(pool.token1Price.toSignificant())
+        : Number(pool.token0Price.toSignificant());
 };
