@@ -34,7 +34,7 @@ export const Main = () => {
                         {subPageIndex === 0 && <Dashboard />}{' '}
                         {subPageIndex === 1 && <ProvideLiquidity />}
                     </Page>
-                    <div className="w-full lg:hidden fixed bottom-0">
+                    <div className="w-full lg:hidden fixed bottom-0 flex justify-center">
                         <Menu
                             subPageIndex={subPageIndex}
                             setSubPage={(index: number) => {

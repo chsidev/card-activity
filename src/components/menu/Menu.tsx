@@ -17,7 +17,7 @@ interface Props {
 
 export const Menu = ({ subPageIndex, setSubPage }: Props) => {
     return (
-        <div className="w-full flex justify-between box-shadow rounded-[18px] bg-black-600 overflow-auto p-2">
+        <div className="w-full max-w-[536px] flex justify-between box-shadow rounded-[18px] bg-black-600 overflow-auto p-2">
             <MenuButton
                 title="Dashboard Home"
                 iconSrc={subPageIndex !== 0 ? dashboard : dashboardSelected}
