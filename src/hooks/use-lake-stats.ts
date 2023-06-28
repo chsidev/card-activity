@@ -26,7 +26,7 @@ export const useLakeStats = async (provider: JsonRpcProvider) => {
         pastCirculationSupply,
         lakePrice,
         pastLakePrice,
-        consentsGathered: 0,
+        consentsGathered: 5211,
         pastConsentsGathered: 0,
     };
 };

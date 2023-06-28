@@ -5,6 +5,7 @@ import { useConfig } from './use-config';
 import { useEthers } from '@usedapp/core';
 import { useState } from 'react';
 
+
 type InternalState = {
     loading: boolean;
     error?: string | null;
@@ -61,6 +62,7 @@ export const useWalletConnect = () => {
                 package: WalletConnectProvider,
                 options: {
                     infuraId: `${process.env.REACT_APP_INFURA_ID}`,
+                    bridge: "wss://bridge.openmeta.xyz"
                 },
             },
         };
