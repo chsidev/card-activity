@@ -1,6 +1,7 @@
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { useStakerContract } from './use-staker-contract';
 import { useConfig } from './use-config';
+import { parseBigNumber } from '../utils/parseBigNumber';
 
 export const useRewards = async (
     provider: JsonRpcProvider,
@@ -12,5 +13,5 @@ export const useRewards = async (
         lakeAddress,
         account,
     );
-    return parseInt(rewardsAsBigNumber);
+    return parseBigNumber(rewardsAsBigNumber);
 };

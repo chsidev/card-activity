@@ -123,7 +123,8 @@ export const ProvideLiquidityWidget = () => {
                     }}
                 />
                 <span className="text-sm tracking-[.1em] my-2">
-                    {rewards} REWARDS AVAILABLE
+                    {formatValue(rewards, ASSET_LAKE.symbol, 2)} REWARDS
+                    AVAILABLE
                 </span>
             </div>
             <div className="w-full flex flex-col items-center mt-8">

@@ -16,6 +16,7 @@ import { END_TIME, START_TIME } from '../../../../constants/mainnet';
 import { parseBigNumber } from '../../../../utils/parseBigNumber';
 import { ASSET_LAKE } from '../../../../constants/assets';
 import { formatValue } from '../../../../utils/formatValue';
+import { useUnstake } from '../../../../hooks/use-unstake';
 
 type Props = {
     isOpen: boolean;
@@ -49,16 +50,6 @@ export const StakingModal = ({
         ) => {
             let totalReward = 0;
             for (let i = 0; i < stakedPositions.length; i++) {
-                console.log(
-                    getIncentiveId(
-                        lakeAddress,
-                        getPool(wethAddress, lakeAddress)!.poolAddress,
-                        START_TIME,
-                        END_TIME,
-                        account,
-                    ),
-                    'get',
-                );
                 const rewardInfo =
                     await stakingContract.callStatic.getRewardInfo(
                         {
@@ -98,8 +89,14 @@ export const StakingModal = ({
     const onUnstakeClick = async (position: IPositionDetails) => {
         if (library && account) {
             setIsClaiming(true);
-            console.log('unstaking');
+            await useUnstake(
+                library,
+                account,
+                position.positionId,
+                getPool(wethAddress, lakeAddress)!.poolAddress,
+            );
             setIsClaiming(false);
+            refreshPositions();
         }
     };
 
