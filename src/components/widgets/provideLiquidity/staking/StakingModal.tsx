@@ -3,6 +3,7 @@ import { ClipLoader } from 'react-spinners';
 import { IPositionDetails } from '../../../../interfaces/positionDetails.interface';
 import { PositionsList } from '../PositionsList';
 import ReactModal from 'react-modal';
+import { JsonRpcProvider } from '@ethersproject/providers';
 import { WalletConnectContext } from '../../../../context';
 import cancelIcon from '../../../../assets/icons/cancel-icon.svg';
 import { colors } from '../../../../constants/colors';
@@ -11,12 +12,13 @@ import { useStake } from '../../../../hooks/use-stake';
 import { useConfig } from '../../../../hooks/use-config';
 import { useStakerContract } from '../../../../hooks/use-staker-contract';
 import { Contract } from 'ethers';
-import { getIncentiveId } from '../../../../utils/getIncentiveId';
 import { END_TIME, START_TIME } from '../../../../constants/mainnet';
 import { parseBigNumber } from '../../../../utils/parseBigNumber';
 import { ASSET_LAKE } from '../../../../constants/assets';
 import { formatValue } from '../../../../utils/formatValue';
 import { useUnstake } from '../../../../hooks/use-unstake';
+import { GradientButton } from '../../../button/gradient/GradientButton';
+import { useRewards } from '../../../../hooks/use-rewards';
 
 type Props = {
     isOpen: boolean;
@@ -40,8 +42,22 @@ export const StakingModal = ({
     const { wethAddress, lakeAddress, getPool } = useConfig();
     const { account, library } = useContext(WalletConnectContext);
     const [isStaking, setIsStaking] = useState(false);
-    const [isClaiming, setIsClaiming] = useState(false);
+    const [isUnstaking, setIsUnstaking] = useState(false);
+    const [areRewardsLoading, setAreRewardsLoading] = useState(false);
     const [pendingReward, setPendingReward] = useState(0);
+    const [rewards, setRewards] = useState(0);
+
+    useEffect(() => {
+        const fetchData = async (account: string, library: JsonRpcProvider) => {
+            setRewards(await useRewards(library, account));
+            setAreRewardsLoading(false);
+        };
+
+        if (library && account) {
+            setAreRewardsLoading(true);
+            fetchData(account, library).catch(console.error);
+        }
+    }, [library, account, refreshPositions]);
 
     useEffect(() => {
         const fetchData = async (
@@ -88,20 +104,24 @@ export const StakingModal = ({
 
     const onUnstakeClick = async (position: IPositionDetails) => {
         if (library && account) {
-            setIsClaiming(true);
+            setIsUnstaking(true);
             await useUnstake(
                 library,
                 account,
                 position.positionId,
                 getPool(wethAddress, lakeAddress)!.poolAddress,
             );
-            setIsClaiming(false);
+            setIsUnstaking(false);
             refreshPositions();
         }
     };
 
     const onCloseClick = () => {
         closeModal();
+    };
+
+    const onClaimClick = () => {
+        console.log('claim');
     };
 
     return (
@@ -127,7 +147,7 @@ export const StakingModal = ({
                     </div>
                 </div>
                 <div className="flex flex-col rounded-[32px] border border-gray-500 py-8 px-6 lg:px-8 bg-black-800">
-                    {isLoading || isStaking || isClaiming ? (
+                    {isLoading || isStaking || isUnstaking ? (
                         <div className="flex min-w-[20vw] h-[20rem] justify-center items-center">
                             <ClipLoader
                                 className="!w-[5rem] !h-[5rem]"
@@ -167,15 +187,51 @@ export const StakingModal = ({
                                             }
                                         />
                                     </div>
+                                </>
+                            ) : (
+                                <></>
+                            )}
+                            {!areRewardsLoading ? (
+                                <>
                                     <div className="font-kanit-medium color-gray-gradient text-shadow text-xl tracking-[.12em] text-center mt-2">
-                                        PENDING REWARD:
+                                        REWARDS:
                                     </div>
-                                    <div className="font-kanit-medium color-gray-gradient text-shadow text-xl tracking-[.12em] text-center">
-                                        {formatValue(
-                                            pendingReward,
-                                            ASSET_LAKE.symbol,
-                                            2,
-                                        )}
+                                    <div className="flex justify-around">
+                                        <div>
+                                            <div className="font-kanit-medium color-gray-gradient text-shadow text-xl tracking-[.12em] text-center mt-2">
+                                                PENDING:
+                                            </div>
+                                            <span className="font-kanit-medium color-gray-gradient text-shadow text-l tracking-[.1em] my-2">
+                                                {formatValue(
+                                                    pendingReward,
+                                                    ASSET_LAKE.symbol,
+                                                    2,
+                                                )}{' '}
+                                            </span>
+                                        </div>
+
+                                        <div>
+                                            <div className="font-kanit-medium color-gray-gradient text-shadow text-xl tracking-[.12em] text-center mt-2">
+                                                AVAILABLE:
+                                            </div>
+                                            <span className="font-kanit-medium color-gray-gradient text-shadow text-l tracking-[.1em] my-2">
+                                                {formatValue(
+                                                    rewards,
+                                                    ASSET_LAKE.symbol,
+                                                    2,
+                                                )}{' '}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="w-full flex flex-col items-center mt-8">
+                                        <GradientButton
+                                            size="medium"
+                                            disabled={rewards === 0}
+                                            text="CLAIM REWARDS"
+                                            onClick={() => {
+                                                onClaimClick();
+                                            }}
+                                        />
                                     </div>
                                 </>
                             ) : (

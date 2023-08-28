@@ -15,7 +15,6 @@ import { usePositions } from '../../../hooks/use-positions';
 import { useTokenBalance } from '@usedapp/core';
 import { StakingModal } from './staking/StakingModal';
 import { useStakedPositions } from '../../../hooks/use-staked-positions';
-import { useRewards } from '../../../hooks/use-rewards';
 
 export const ProvideLiquidityWidget = () => {
     const { account, library } = useContext(WalletConnectContext);
@@ -32,14 +31,12 @@ export const ProvideLiquidityWidget = () => {
     const [isStakingModalOpen, setIsStakingModalOpen] = useState(false);
     const [refreshPositions, setRefreshPositions] = useState(0);
     const [lakeBalance, setLakeBalance] = useState(0);
-    const [rewards, setRewards] = useState(0);
     const lakeBalanceAsBigNumber = useTokenBalance(lakeAddress, account);
 
     useEffect(() => {
         const fetchData = async (account: string, library: JsonRpcProvider) => {
             setStakedPositions(await useStakedPositions(library, account));
             setPositions(await usePositions(library, account));
-            setRewards(await useRewards(library, account));
             setArePositionsLoading(false);
         };
 
@@ -56,10 +53,6 @@ export const ProvideLiquidityWidget = () => {
                 : 0,
         );
     }, [lakeBalanceAsBigNumber]);
-
-    const onClaimClick = () => {
-        console.log('claim');
-    };
 
     return (
         <div className="w-full flex flex-col items-center mt-10 mb-4">
@@ -112,20 +105,6 @@ export const ProvideLiquidityWidget = () => {
                         setRefreshPositions(new Date().getTime());
                     }}
                 />
-            </div>
-            <div className="w-full flex flex-col items-center mt-8">
-                <GradientButton
-                    size="medium"
-                    disabled={rewards === 0}
-                    text="CLAIM REWARDS"
-                    onClick={() => {
-                        onClaimClick();
-                    }}
-                />
-                <span className="text-sm tracking-[.1em] my-2">
-                    {formatValue(rewards, ASSET_LAKE.symbol, 2)} REWARDS
-                    AVAILABLE
-                </span>
             </div>
             <div className="w-full flex flex-col items-center mt-8">
                 <Button
